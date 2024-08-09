@@ -1,0 +1,1 @@
+# VASP_local_build_AMD

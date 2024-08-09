@@ -59,19 +59,20 @@
         source /home/vincent/INSTALL/VASP_AMD/AOCL/build/4.2.0/aocc/amd-libs.cfg
         cd ../../
         mkdir OpenMPI
-        cp openmpi-5.0.5.tar.gz OpenMPI
+        cp openmpi-4.1.6.tar.gz OpenMPI
         cd OpenMPI
-        tar xvzf openmpi-5.0.5.tar.gz -C OpenMPI_AOCC
+        mkdir OpenMPI_AOCC
+        tar xvzf openmpi-4.1.6.tar.gz -C OpenMPI_AOCC
         cd OpenMPI_AOCC
         cd openmpi-5.0.5
         mkdir build
         cd build
         pwd
 #### gives
-        /home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build
+        /home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-4.1.6/build
 #### copy 
         cd ..
-        ./configure CC=clang CXX=clang++ FC=flang F77=flang OMPI_CC=clang OMPI_CXX=clang++ OMPI_FC=flang OMPI_F77=flang --prefix=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build
+        ./configure CC=clang CXX=clang++ FC=flang F77=flang OMPI_CC=clang OMPI_CXX=clang++ OMPI_FC=flang OMPI_F77=flang --prefix=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-4.1.6/build
  ##### error
  
 * It appears that your C++ compiler is unable to link against object
@@ -85,10 +86,31 @@
 configure: error: C and C++ compilers are not link compatible.  Can not continue.
 ### Fix?
         ./configure CC=clang CFLAGS=-m64 CXX=clang++ FC=flang FCFLAGS=-m64 F77=flang OMPI_CC=clang OMPI_CXX=clang++ OMPI_FC=flang OMPI_F77=flang --prefix=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build
-        
+#### Open aterminal
+        sudo apt install g++-12
+#### This solved the problem
+        mkdir OpenMPI
 
-
-
+#### OpenMPI 5
+        mkdir OpenMPI
+        cp openmpi-5.0.5.tar.gz OpenMPI
+        cd OpenMPI
+        mkdir OpenMPI_AOCC
+        tar xvzf openmpi-5.0.5.tar.gz -C OpenMPI_AOCC
+        cd OpenMPI_AOCC
+        cd openmpi-5.0.5
+        mkdir build
+        cd build
+        pwd
+#### gives
+        /home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build
+#### copy 
+        cd ..
+        ./configure CC=clang CXX=clang++ FC=flang F77=flang OMPI_CC=clang OMPI_CXX=clang++ OMPI_FC=flang OMPI_F77=flang --prefix=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build
+        make install
+#### Loacal activate
+        export PATH=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build/bin:$PATH
+        export LD_LIBRARY_PATH=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build/lib:$LD_LIBRARY_PATH
 
 
 

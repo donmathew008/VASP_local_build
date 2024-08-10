@@ -108,10 +108,19 @@ configure: error: C and C++ compilers are not link compatible.  Can not continue
         cd ..
         ./configure CC=clang CXX=clang++ FC=flang F77=flang OMPI_CC=clang OMPI_CXX=clang++ OMPI_FC=flang OMPI_F77=flang --prefix=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build
         make install
-#### Loacal activate
+#### Local check
+        cd build
+        pwd
+        copy path
+#### Local activate
         export PATH=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build/bin:$PATH
         export LD_LIBRARY_PATH=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build/lib:$LD_LIBRARY_PATH
-
+### HDF5
+        cd ../../../../
+        mkdir HDF5
+        cd HDF5
+        mkdir HDF5_AOCC
+        cd HDF5_AOCC
 
 
 

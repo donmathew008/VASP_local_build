@@ -190,3 +190,4 @@ configure: error: C and C++ compilers are not link compatible.  Can not continue
         export PATH=/home/vincent/INSTALL/VASP_AMD/HDF5/HDF5_AOCC/myhdfstuff/hdf5-1.14.4-3/build/bin:$PATH
         export LD_LIBRARY_PATH=/home/vincent/INSTALL/VASP_AMD/HDF5/HDF5_AOCC/myhdfstuff/hdf5-1.14.4-3/build/lib:$LD_LIBRARY_PATH
         
+        mpirun -np 1 /home/vincent/INSTALL/VASP_AMD/VASP/vasp.6.4.0/bin/vasp_std > output &

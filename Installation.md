@@ -195,3 +195,7 @@ configure: error: C and C++ compilers are not link compatible.  Can not continue
         cat /proc/cpuinfo | grep "cpu cores" | uniq
 #### to check no: of logical cores
         cat /proc/cpuinfo | grep "processor" | wc -l
+
+#### Final running command for pure mpi parallelisation
+
+        mpirun -np 4 --map-by node:PE=1 --bind-to core -x OMP_NUM_THREADS=1 -x OMP_STACKSIZE=512m -x OMP_PLACES=cores -x OMP_PROC_BIND=close /home/vincent/INSTALL/VASP_gcc_omp/vasp.6.4.0/bin/vasp_std > output &

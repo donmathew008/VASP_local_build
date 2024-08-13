@@ -161,9 +161,9 @@ configure: error: C and C++ compilers are not link compatible.  Can not continue
     tar xvzf vasp.6.4.0_0.tgz
     cd vasp.6.4.0
     cd arch
-    cp makefile.include.aocc_ompi_aocl_omp ../makefile.include
+    cp makefile.include.aocc_ompi_aocl_omp ../makefile.include # skip this step if using our makefile
 
-#### We have included the "makefile.include" in this repository so instead of the previous step just go to make
+#### We have included the "makefile.include.aocc_aocl_ompi" in this repository, download and rename it as "makefile.include" and give necessary changes and just go to make
     cd ..
     make DEPS=1 -j
 #### If you need to remake VASP

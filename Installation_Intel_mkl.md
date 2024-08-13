@@ -17,7 +17,7 @@
     cd arch
     cp makefile.include.aocc_ompi_aocl_omp ../makefile.include
 
-#### We have included the "makefile.include" in this repository so instead of the previous step just go to make
+#### We have included the "makefile.include.gnu_ompi" in this repository, download and rename it as "makefile.include" and give necessary changes and just go to make
     cd ..
     make DEPS=1 -j
 #### If you need to remake VASP

@@ -4,3 +4,8 @@
 ### $\color{Red}{\textbf{Even though we were able to build the executables, the builds with AOCL were making errors while running}}$
 ### $\color{Green}{\textbf{The Installation with intel mkl is working fine along with wannier90}}$
 
+### Locations  
+    1. /home/INSTALL/VASP_AMD
+    2. /home/INSTALL/VASP_GCC
+    3. /home/INSTALL/VASP_gcc_ompi
+

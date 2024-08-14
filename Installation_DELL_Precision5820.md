@@ -65,45 +65,50 @@
     make install
     make tests 
 # Some tests may fail we dont't know why...!
-5. Install 
-6. Install VASP}}$  
-    cd ../../
-    mkdir VASP
-    cp vasp.6.4.0_0.tgz VASP
-    cd VASP
-    tar xvzf vasp.6.4.0_0.tgz
-    cd vasp.6.4.0
-    cd arch
-    cp makefile.include.aocc_ompi_aocl_omp ../makefile.include # skip this step if using our makefile
+5. Install ScaLAPACK(scalapack-2.2.0)
+[Download](https://github.com/Reference-ScaLAPACK/scalapack/archive/refs/tags/v2.2.0.tar.gz)
+# Download and extract the file
+# Download either the "SLmake.inc" or rename "SLmake.inc.example" to "SLmake.inc" with following changes
+    FC            = mpif90 -fallow-argument-mismatch
+    FCFLAGS       = -O3 -std=legacy
+# Now we are ready to Install VASP
 
-# We have included the "makefile.include.aocc_aocl_ompi" in this repository, download and rename it as "makefile.include" and give necessary changes and just go to make
-    cd ..
+7. Install VASP(vasp.6.4.0)
+    cd vasp.6.4.0
+# We have included the "makefile.include" in this repository, and give necessary changes(if needed) and just go to make
     make DEPS=1 -j
 # If you need to remake VASP
     make veryclean
     make DEPS=1 -j
 # SET ENV
-    source /home/vincent/INSTALL/VASP_AMD/AOCC/setenv_AOCC.sh
-    source /home/vincent/INSTALL/VASP_AMD/AOCL/build/4.2.0/aocc/amd-libs.cfg
-    export PATH=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build/bin:$PATH
-    export LD_LIBRARY_PATH=/home/vincent/INSTALL/VASP_AMD/OpenMPI/OpenMPI_AOCC/openmpi-5.0.5/build/lib:$LD_LIBRARY_PATH
-    export PATH=/home/vincent/INSTALL/VASP_AMD/HDF5/HDF5_AOCC/myhdfstuff/hdf5-1.14.4-3/build/bin:$PATH
-    export LD_LIBRARY_PATH=/home/vincent/INSTALL/VASP_AMD/HDF5/HDF5_AOCC/myhdfstuff/hdf5-1.14.4-3/build/lib:$LD_LIBRARY_PATH
-    mpirun -np 1 /home/vincent/INSTALL/VASP_GCC/vasp6/vasp.6.4.0/bin/vasp_ncl > output &
-# Path of AOCL
-    /home/vincent/INSTALL/VASP_AMD/AOCL/build/4.2.0/aocc
+    export PATH=/home/vincent/INSTALL/openmpi-5.0.5/build/bin:$PATH
+    export LD_LIBRARY_PATH=/home/vincent/INSTALL/openmpi-5.0.5/build/lib:$LD_LIBRARY_PATH
+    export PATH=/opt/intel/oneapi/mkl/2024.2/bin:$PATH
+    export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2024.2/lib:$LD_LIBRARY_PATH
+# Running VASP executable(Pure MPI)
+    mpirun -np 4 --map-by node:PE=1 --bind-to core -x OMP_NUM_THREADS=1 -x OMP_STACKSIZE=512m -x OMP_PLACES=cores -x OMP_PROC_BIND=close /home/vincent/INSTALL/vasp.6.4.0/bin/vasp_std > output &
 # Following are some additional useful commands
 # to check no: of cores
     cat /proc/cpuinfo | grep "cpu cores" | uniq
 ## In our case
-    4
+    8
 # to check no: of logical cores
     cat /proc/cpuinfo | grep "processor" | wc -l
 ## In our case
-    8
-# This means that we have a total core 8, but in terms of 4 $\times$ 2
-# That is maximum value of $ncores = 4 in mpirun
+    16
+# This means that we have a total core 16, but in terms of 8 $\times$ 2
+# That is maximum value of $ncores = 8 in mpirun
     mpirun -np $ncores
-# Final running command for pure mpi parallelization (OMP_NUM_THREADS=1)
-    mpirun -np 4 --map-by node:PE=1 --bind-to core -x OMP_NUM_THREADS=1 -x OMP_STACKSIZE=512m -x OMP_PLACES=cores -x OMP_PROC_BIND=close /home/vincent/INSTALL/VASP_gcc_omp/vasp.6.4.0/bin/vasp_std > output &
+# How to run vasp at a specific location
+# Go to that location and open a terminal and execute
+    export PATH=/home/vincent/INSTALL/openmpi-5.0.5/build/bin:$PATH
+    export LD_LIBRARY_PATH=/home/vincent/INSTALL/openmpi-5.0.5/build/lib:$LD_LIBRARY_PATH
+    export PATH=/opt/intel/oneapi/mkl/2024.2/bin:$PATH
+    export LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/2024.2/lib:$LD_LIBRARY_PATH
+# And then,
+    mpirun -np 4 --map-by node:PE=1 --bind-to core -x OMP_NUM_THREADS=1 -x OMP_STACKSIZE=512m -x OMP_PLACES=cores -x OMP_PROC_BIND=close /home/vincent/INSTALL/vasp.6.4.0/bin/vasp_std > output &
+# This command is adapted from VASP "testsuite" -> "ompi+omp.conf"
 
+    nranks=4
+    nthrds=2
+    mpirun -np $nranks --map-by node:PE=$nthrds --bind-to core -x OMP_NUM_THREADS=$nthrds -x OMP_STACKSIZE=512m -x OMP_PLACES=cores -x OMP_PROC_BIND=close vasp_executable
